@@ -97,6 +97,36 @@ def test_add_to_watchlist_nonexistent_film_raises(app, sample_user):
             add_to_watchlist(user_id=sample_user, film_id=fake_film_id)
 
 
+def test_add_to_watchlist_accepts_private_visibility(app, sample_user, sample_film):
+    """
+    Callers should be able to create a private watchlist entry explicitly.
+    """
+    with app.app_context():
+        entry = add_to_watchlist(
+            user_id=sample_user,
+            film_id=sample_film,
+            public=False,
+        )
+
+        assert entry.public is False
+        assert entry.to_dict()["public"] is False
+
+
+def test_watchlist_add_route_rejects_non_boolean_public(app, sample_user, sample_film):
+    """
+    The add endpoint should reject non-boolean public values.
+    """
+    client = app.test_client()
+
+    response = client.post(
+        f"/watchlist/{sample_user}/add",
+        json={"film_id": sample_film, "public": "false"},
+    )
+
+    assert response.status_code == 400
+    assert response.get_json()["error"] == "public must be a boolean"
+
+
 def test_remove_from_watchlist_deletes_entry(app, sample_user, sample_film):
     """
     Removing a watchlist film should delete the matching WatchlistEntry.
