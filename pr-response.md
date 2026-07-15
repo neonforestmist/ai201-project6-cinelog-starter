@@ -2,7 +2,9 @@
 
 ## AI Usage
 
-I used AI as a helper for orientation and review hygiene: summarizing the existing `models.py`, `services/collection_service.py`, and `tests/test_collection.py` patterns; checking that the watchlist changes followed those patterns; and verifying that the final commit messages use conventional commit format. For the design responses, I used AI to surface tradeoffs and counterarguments, then kept the final decisions grounded in CineLog's codebase and product context.
+I used AI as a helper for orientation and review hygiene: summarizing the existing `models.py`, `services/collection_service.py`, and `tests/test_collection.py` patterns; checking that the watchlist changes followed those patterns; and verifying that the final commit messages use conventional commit format.
+
+For Comment 4, I asked AI to compare a public-by-default watchlist with a private-by-default watchlist. The AI surfaced privacy risks and social-discovery benefits; my final answer kept `public=True` because CineLog's current community-oriented API already exposes public collection behavior and does not yet have a visibility setup flow. For Comment 5, I asked AI to compare alphabetical sorting with recency sorting. The final answer chose `date_added` descending because it best matched CineLog's existing `get_collection()` behavior and the product meaning of a watchlist as recent intent, not just because AI suggested a general UX preference.
 
 ## Review Comment 1: Rename `save_to_watchlist()`
 
