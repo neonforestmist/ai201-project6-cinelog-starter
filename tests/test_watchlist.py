@@ -149,3 +149,11 @@ def test_get_watchlist_returns_newest_first(app, sample_user):
 
         assert titles[0] == "Moonlight"
         assert titles[1] == "Before Sunrise"
+
+
+def test_get_watchlist_empty_user_returns_empty_list(app, sample_user):
+    """
+    A user with no watchlist entries should get an empty list, not an error.
+    """
+    with app.app_context():
+        assert get_watchlist(sample_user) == []
